@@ -1,5 +1,18 @@
 #!/bin/bash
 
+# Check if jq is installed
+if ! command -v jq &> /dev/null; then
+    echo "jq could not be found. Attempting to install..."
+    if [[ "$OSTYPE" == "linux-gnu"* ]]; then
+        sudo apt-get install jq
+    elif [[ "$OSTYPE" == "darwin"* ]]; then
+        brew install jq
+    else
+        echo "Could not determine OS type. Please install jq manually."
+        exit 1
+    fi
+fi
+
 # Function to fetch a question from the API
 fetch_question() {
     local type=$1
